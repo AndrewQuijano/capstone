@@ -22,6 +22,15 @@ jobs:
       working-directory: ./debian
       run: ./setup.sh ${{ github.event.release.tag_name }}
 
+    - name: Upload debian package to release
+      uses: softprops/action-gh-release@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+        tag_name: ${{ github.event.release.tag_name }}
+        files: |
+          ./debian/*.deb
+
     - name: archive
       id: archive
       run: |
@@ -37,13 +46,12 @@ jobs:
         echo "tarball=$TARBALL" >> $GITHUB_OUTPUT
         echo "shasum=$SHASUM" >> $GITHUB_OUTPUT
 
-    - name: Upload debian packages to release
+    - name: Upload tarball and shasum to release
       uses: softprops/action-gh-release@v2
       env:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       with:
         tag_name: ${{ github.event.release.tag_name }}
         files: |
-          ./debian/*.deb
           ${{ steps.archive.outputs.tarball }}
           ${{ steps.archive.outputs.shasum }}
