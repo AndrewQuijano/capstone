@@ -15,6 +15,9 @@ jobs:
       with:
         submodules: true
     
+    - name: Make setup.sh executable
+      run: chmod +x debian/setup.sh
+
     - name: Build Debian Package
       working-directory: ./debian
       run: ./setup.sh ${{ github.event.release.tag_name }}
