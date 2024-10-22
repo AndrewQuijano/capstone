@@ -15,6 +15,10 @@ jobs:
       with:
         submodules: true
     
+    - name: Build Debian Package
+      working-directory: ./debian
+      run: ./setup.sh ${{ github.event.release.tag_name }}
+
     - name: archive
       id: archive
       run: |
@@ -29,10 +33,6 @@ jobs:
         sha256sum $TARBALL > $SHASUM
         echo "tarball=$TARBALL" >> $GITHUB_OUTPUT
         echo "shasum=$SHASUM" >> $GITHUB_OUTPUT
-      
-    - name: Build Debian Package
-      working-directory: debian
-      run: ./setup.sh ${{ github.event.release.tag_name }}
 
     - name: Upload debian packages to release
       uses: softprops/action-gh-release@v2
