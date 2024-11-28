@@ -21,9 +21,17 @@ cmake_policy(SET CMP0042 NEW)
 # Enable support for MSVC_RUNTIME_LIBRARY
 cmake_policy(SET CMP0091 NEW)
 
-project(capstone
-    VERSION 5.0.3
-)
+# Check if VERSION is provided externally, otherwise default to 5.0.3
+if(NOT DEFINED PROJECT_VERSION)
+    set(PROJECT_VERSION "5.0.3")
+endif()
+
+# Extract the major, minor, and patch versions
+string(REGEX MATCH "^[0-9]+\\.[0-9]+\\.[0-9]+" PROJECT_VERSION_BASE ${PROJECT_VERSION})
+
+# Set the project version without the pre-release identifier
+project(capstone VERSION ${PROJECT_VERSION_BASE})
+
 
 if (MSVC)
     add_compile_options(/W1 /w14189)
@@ -731,7 +739,6 @@ source_group("Include\\TriCore" FILES ${HEADERS_TRICORE})
 ## installation
 if(CAPSTONE_INSTALL)
     include(GNUInstallDirs)
-
     install(FILES ${HEADERS_COMMON} DESTINATION ${CMAKE_INSTALL_INCLUDEDIR}/capstone)
 
     # Support absolute installation paths (discussion: https://github.com/NixOS/nixpkgs/issues/144170)
