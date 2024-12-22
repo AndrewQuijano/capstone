@@ -959,3 +959,6 @@ if(CAPSTONE_BUILD_CSTEST)
     set(TESTS_UNIT_DIR ${PROJECT_SOURCE_DIR}/tests/unit)
     add_subdirectory(${TESTS_UNIT_DIR})
 endif()
+
+# Include CPack
+include(CPackConfig.txt)
