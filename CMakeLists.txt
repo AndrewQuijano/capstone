@@ -23,8 +23,11 @@ cmake_policy(SET CMP0091 NEW)
 
 # Check if VERSION is provided externally, otherwise default to 5.0.3
 if(NOT DEFINED PROJECT_VERSION)
-    set(PROJECT_VERSION "5.0.3")
+    set(PROJECT_VERSION "5.0.4")
 endif()
+
+# Use PROJECT_VERSION directly for CPack
+set(CPACK_PACKAGE_VERSION ${PROJECT_VERSION})
 
 # Extract the major, minor, and patch versions
 string(REGEX MATCH "^[0-9]+\\.[0-9]+\\.[0-9]+" PROJECT_VERSION_BASE ${PROJECT_VERSION})
@@ -841,3 +844,6 @@ if(CAPSTONE_BUILD_CSTEST)
         install(TARGETS cstest EXPORT capstone-targets DESTINATION ${CMAKE_INSTALL_BINDIR})
     endif()
 endif()
+
+set(CPACK_PROJECT_CONFIG_FILE "${CMAKE_SOURCE_DIR}/CPackConfig.cmake")
+include(CPackConfig.txt)
